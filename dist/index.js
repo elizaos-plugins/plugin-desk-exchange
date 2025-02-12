@@ -107,7 +107,8 @@ var generateNonce = () => {
   return (expiredAt + BigInt(random)).toString();
 };
 var generateJwt = async (endpoint, wallet, subaccountId, nonce) => {
-  const message = `generate jwt for ${wallet.address?.toLowerCase()} and subaccount id ${subaccountId} to trade on happytrading.global with nonce: ${nonce}`;
+  var _a;
+  const message = `generate jwt for ${(_a = wallet.address) == null ? void 0 : _a.toLowerCase()} and subaccount id ${subaccountId} to trade on happytrading.global with nonce: ${nonce}`;
   const signature = await wallet.signMessage(message);
   const response = await axios.post(
     `${endpoint}/v2/auth/evm`,
@@ -183,6 +184,7 @@ var perpTrade = {
     return !!(runtime.getSetting("DESK_EXCHANGE_PRIVATE_KEY") && runtime.getSetting("DESK_EXCHANGE_NETWORK"));
   },
   handler: async (runtime, message, state, options, callback) => {
+    var _a, _b, _c;
     state = !state ? await runtime.composeState(message) : await runtime.updateRecentMessageState(state);
     const context = composeContext({
       state,
@@ -259,11 +261,11 @@ var perpTrade = {
         content,
         message: error.message,
         code: error.code,
-        data: error.response?.data
+        data: (_a = error.response) == null ? void 0 : _a.data
       });
       if (callback) {
         callback({
-          text: `Error executing trade: ${error.message} ${error.response?.data?.errors}`,
+          text: `Error executing trade: ${error.message} ${(_c = (_b = error.response) == null ? void 0 : _b.data) == null ? void 0 : _c.errors}`,
           content: { error: error.message }
         });
       }
@@ -353,6 +355,7 @@ var accountSummary = {
     return !!(runtime.getSetting("DESK_EXCHANGE_PRIVATE_KEY") && runtime.getSetting("DESK_EXCHANGE_NETWORK"));
   },
   handler: async (runtime, message, state, options, callback) => {
+    var _a, _b, _c;
     state = !state ? await runtime.composeState(message) : await runtime.updateRecentMessageState(state);
     const context = composeContext2({
       state,
@@ -397,11 +400,11 @@ Your collaterals:
       elizaLogger2.error("Error getting account summary:", {
         message: error.message,
         code: error.code,
-        data: error.response?.data
+        data: (_a = error.response) == null ? void 0 : _a.data
       });
       if (callback) {
         callback({
-          text: `Error getting account summary: ${error.message} ${error.response?.data?.errors}`,
+          text: `Error getting account summary: ${error.message} ${(_c = (_b = error.response) == null ? void 0 : _b.data) == null ? void 0 : _c.errors}`,
           content: { error: error.message }
         });
       }
@@ -472,6 +475,7 @@ var cancelOrders = {
     return !!(runtime.getSetting("DESK_EXCHANGE_PRIVATE_KEY") && runtime.getSetting("DESK_EXCHANGE_NETWORK"));
   },
   handler: async (runtime, message, state, options, callback) => {
+    var _a, _b, _c, _d, _e;
     state = !state ? await runtime.composeState(message) : await runtime.updateRecentMessageState(state);
     const context = composeContext3({
       state,
@@ -488,7 +492,7 @@ var cancelOrders = {
         jwt,
         getSubaccount(wallet.address, 0)
       );
-      const openOrders = subaccountSummaryResponse.data?.data?.open_orders;
+      const openOrders = (_b = (_a = subaccountSummaryResponse.data) == null ? void 0 : _a.data) == null ? void 0 : _b.open_orders;
       if (openOrders && openOrders.length > 0) {
         for (const o of openOrders) {
           await cancelOrder(endpoint, jwt, {
@@ -509,11 +513,11 @@ var cancelOrders = {
       elizaLogger3.error("Error canceling orders:", {
         message: error.message,
         code: error.code,
-        data: error.response?.data
+        data: (_c = error.response) == null ? void 0 : _c.data
       });
       if (callback) {
         callback({
-          text: `Error canceling orders: ${error.message} ${error.response?.data?.errors}`,
+          text: `Error canceling orders: ${error.message} ${(_e = (_d = error.response) == null ? void 0 : _d.data) == null ? void 0 : _e.errors}`,
           content: { error: error.message }
         });
       }
