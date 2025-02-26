@@ -16,5 +16,22 @@
     "scripts": {
         "build": "tsup --format esm --dts",
         "dev": "tsup --format esm --dts --watch"
+    },
+    "agentConfig": {
+        "pluginType": "elizaos:client:1.0.0",
+        "pluginParameters": {
+            "DESK_EXCHANGE_PRIVATE_KEY": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Required for trading and cancelling orders",
+                "optional": false
+            },
+            "DESK_EXCHANGE_NETWORK": {
+                "type": "string",
+                "minLength": 1,
+                "description": "\"mainnet\" or \"testnet\"",
+                "optional": true
+            }
+        }
     }
 }
